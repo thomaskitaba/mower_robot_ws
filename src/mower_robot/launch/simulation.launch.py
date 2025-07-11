@@ -86,7 +86,8 @@ def generate_launch_description():
         ),
         launch_arguments={
             'use_sim_time': use_sim_time,
-            'params_file': os.path.join(pkg_mower_robot, 'config', 'nav2_params.yaml')
+            'params_file': os.path.join(pkg_mower_robot, 'config', 'nav2_params.yaml'),
+            'namespace': 'mower_robot'
         }.items()
     )
     
