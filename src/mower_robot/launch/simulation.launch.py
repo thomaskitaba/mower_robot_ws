@@ -65,6 +65,7 @@ def generate_launch_description():
         package='cartographer_ros',
         executable='cartographer_node',
         name='cartographer_node',
+        namespace='mower_robot',
         output='screen',
         parameters=[{
             'use_sim_time': use_sim_time
@@ -74,36 +75,15 @@ def generate_launch_description():
             '-configuration_basename', 'cartographer.lua'
         ],
         remappings=[
-            ('/scan', '/mower_robot/scan'),
-            ('/odom', '/mower_robot/odom')
+            ('/mower_robot/scan', '/mower_robot/scan'),
+            ('/mower_robot/odom', '/mower_robot/odom')
         ]
-    )
-    
-    # Nav2 with TEB planner
-    nav2 = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('nav2_bringup'), 'launch', 'navigation_launch.py')
-        ),
-        launch_arguments={
-            'use_sim_time': use_sim_time,
-            'params_file': os.path.join(pkg_mower_robot, 'config', 'nav2_params.yaml'),
-            'namespace': 'mower_robot'
-        }.items()
     )
     
     # Initial Pose Publisher
     initial_pose_publisher = Node(
         package='mower_robot',
         executable='initial_pose',
-        namespace='mower_robot',
-        output='screen',
-        parameters=[{'use_sim_time': use_sim_time}]
-    )
-    
-    # Auto navigation node
-    auto_nav = Node(
-        package='mower_robot',
-        executable='auto_nav',
         namespace='mower_robot',
         output='screen',
         parameters=[{'use_sim_time': use_sim_time}]
@@ -125,8 +105,6 @@ def generate_launch_description():
         robot_state_publisher,
         spawn_entity,
         cartographer,
-        nav2,
         initial_pose_publisher,
-        auto_nav,
         rviz
     ])

@@ -22,8 +22,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://materials/textures</uri>
-              <name>Grass</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grass</name>
             </script>
           </material>
         </visual>
@@ -51,8 +51,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://materials/textures</uri>
-              <name>Pavement</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
             </script>
           </material>
         </visual>
@@ -79,8 +79,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://materials/textures</uri>
-              <name>Pavement</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
             </script>
           </material>
         </visual>
@@ -107,8 +107,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://materials/textures</uri>
-              <name>Pavement</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
             </script>
           </material>
         </visual>
@@ -135,8 +135,8 @@
           </geometry>
           <material>
             <script>
-              <uri>file://materials/textures</uri>
-              <name>Pavement</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
             </script>
           </material>
         </visual>
