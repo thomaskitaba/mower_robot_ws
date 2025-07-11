@@ -29,6 +29,7 @@ setup(
     entry_points={
         'console_scripts': [
             'teleop = mower_robot.teleop:main',
+            'auto_nav = mower_robot.auto_nav:main',
         ],
     },
     
