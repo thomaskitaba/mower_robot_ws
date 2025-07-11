@@ -16,8 +16,8 @@ setup(
         (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         (os.path.join('share', package_name, 'config'), glob('config/*.rviz')),
-        (os.path.join('share', package_name, 'models/materials/scripts'), glob('models/materials/scripts/*.material')),
-        (os.path.join('share', package_name, 'models/materials/textures'), glob('models/materials/textures/*.png')),
+        # (os.path.join('share', package_name, 'models/materials/scripts'), glob('models/materials/scripts/*.material')),
+        # (os.path.join('share', package_name, 'models/materials/textures'), glob('models/materials/textures/*.png')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -28,7 +28,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            # Add Python scripts here if needed
+            'teleop = mower_robot.teleop:main',
         ],
     },
+    
 )
