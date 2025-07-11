@@ -1,0 +1,27 @@
+material Grass
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture grass.png
+      }
+    }
+  }
+}
+
+material Pavement
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture pavement.png
+      }
+    }
+  }
+}

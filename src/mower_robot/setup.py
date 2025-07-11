@@ -16,6 +16,8 @@ setup(
         (os.path.join('share', package_name, 'worlds'), glob('worlds/*.world')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         (os.path.join('share', package_name, 'config'), glob('config/*.rviz')),
+        (os.path.join('share', package_name, 'models/materials/scripts'), glob('models/materials/scripts/*.material')),
+        (os.path.join('share', package_name, 'models/materials/textures'), glob('models/materials/textures/*.png')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
