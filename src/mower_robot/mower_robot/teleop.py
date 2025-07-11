@@ -11,11 +11,11 @@ class TeleopNode(Node):
         self.get_logger().info("Use Arrow keys to move, Spacebar to stop, Ctrl+C to quit")
         self.settings = termios.tcgetattr(sys.stdin)
         self.moveBindings = {
-            '\x1b[A': (1.0, 0.0),   # Up arrow: Forward
-            '\x1b[B': (-1.0, 0.0),  # Down arrow: Backward
-            '\x1b[D': (0.0, 1.0),   # Left arrow: Turn left
-            '\x1b[C': (0.0, -1.0),  # Right arrow: Turn right
-            ' ': (0.0, 0.0),        # Spacebar: Stop
+            '\x1b[A': (-1.0, 0.0),  # Up arrow: Backward
+            '\x1b[B': (1.0, 0.0),   # Down arrow: Forward
+            '\x1b[D': (0.0, -1.0),  # Left arrow: Turn right
+            '\x1b[C': (0.0, 1.0),   # Right arrow: Turn left
+            ' ': (0.0, 0.0), 
         }
         self.speed = 0.5
         self.turn = 1.0

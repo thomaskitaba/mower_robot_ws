@@ -26,7 +26,7 @@ def generate_launch_description():
         description='Use simulation (Gazebo) clock if true'
     )
     
-    # Start Gazebo
+    # Start Gazebo with the specified world
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
@@ -34,7 +34,7 @@ def generate_launch_description():
         launch_arguments={'world': world_file}.items()
     )
     
-    # Spawn the robot
+    # Spawn the robot in Gazebo
     spawn_entity = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
@@ -44,18 +44,23 @@ def generate_launch_description():
         output='screen'
     )
     
-    # Robot State Publisher
+    # Publish robot state (URDF)
+    try:
+        robot_description = open(os.path.join(pkg_mower_robot, 'urdf', 'mower_robot.urdf')).read()
+    except FileNotFoundError:
+        print("ERROR: mower_robot.urdf not found in", os.path.join(pkg_mower_robot, 'urdf'))
+        raise
     robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         parameters=[{
-            'robot_description': open(os.path.join(pkg_mower_robot, 'urdf', 'mower_robot.urdf')).read(),
+            'robot_description': robot_description,
             'use_sim_time': use_sim_time
         }],
         output='screen'
     )
     
-    # SLAM Toolbox
+    # SLAM Toolbox for mapping
     slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('slam_toolbox'), 'launch', 'online_async_launch.py')
@@ -66,7 +71,7 @@ def generate_launch_description():
         }.items()
     )
     
-    # Nav2 with TEB
+    # Nav2 with TEB planner for navigation
     nav2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('nav2_bringup'), 'launch', 'navigation_launch.py')
@@ -77,7 +82,25 @@ def generate_launch_description():
         }.items()
     )
     
-    # RViz
+    # Publish initial pose for SLAM and Nav2
+    initial_pose_publisher = Node(
+        package='mower_robot',
+        executable='initial_pose',
+        namespace='mower_robot',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+    
+    # Auto navigation node (moves robot after 5 seconds)
+    auto_nav = Node(
+        package='mower_robot',
+        executable='auto_nav',
+        namespace='mower_robot',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+    
+    # RViz for visualization
     rviz = Node(
         package='rviz2',
         executable='rviz2',
@@ -94,5 +117,7 @@ def generate_launch_description():
         spawn_entity,
         slam,
         nav2,
+        initial_pose_publisher,
+        auto_nav,
         rviz
     ])
