@@ -16,7 +16,8 @@
   <depend>robot_state_publisher</depend>
   <depend>rviz2</depend>
   <depend>sensor_msgs</depend>
-  <depend>slam_toolbox</depend>
+  <depend>cartographer_ros</depend>
+  <!-- <depend>slam_toolbox</depend> -->
   <depend>visualization_msgs</depend>
 
   <test_depend>ament_copyright</test_depend>

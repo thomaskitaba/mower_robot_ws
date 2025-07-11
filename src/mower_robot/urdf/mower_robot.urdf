@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <robot name="mower_robot">
-  <!-- Base Link -->
+  <!-- Base Link (Box Chassis) -->
   <link name="base_link">
     <visual>
       <geometry>
-        <cylinder length="0.1" radius="0.2"/>
+        <box size="0.4 0.3 0.1"/> <!-- Length x Width x Height -->
       </geometry>
       <material name="red">
         <color rgba="1 0 0 1"/>
@@ -12,7 +12,7 @@
     </visual>
     <collision>
       <geometry>
-        <cylinder length="0.1" radius="0.2"/>
+        <box size="0.4 0.3 0.1"/>
       </geometry>
     </collision>
     <inertial>
@@ -21,8 +21,8 @@
     </inertial>
   </link>
 
-  <!-- Left Wheel -->
-  <link name="left_wheel">
+  <!-- Left Rear Wheel (Powered) -->
+  <link name="left_rear_wheel">
     <visual>
       <geometry>
         <cylinder length="0.05" radius="0.1"/>
@@ -42,13 +42,15 @@
     </inertial>
   </link>
 
-  <!-- Right Wheel -->
-  <link name="right_wheel">
+  <!-- Right Rear Wheel (Powered) -->
+  <link name="right_rear_wheel">
     <visual>
       <geometry>
         <cylinder length="0.05" radius="0.1"/>
       </geometry>
-      <material name="black"/>
+      <material name="black">
+        <color rgba="0 0 0 1"/>
+      </material>
     </visual>
     <collision>
       <geometry>
@@ -61,24 +63,45 @@
     </inertial>
   </link>
 
-  <!-- Caster Wheel -->
-  <link name="caster_wheel">
+  <!-- Left Front Caster Wheel -->
+  <link name="left_front_caster">
     <visual>
       <geometry>
-        <sphere radius="0.05"/>
+        <cylinder length="0.05" radius="0.1"/>
       </geometry>
-      <material name="white">
-        <color rgba="1 1 1 1"/>
+      <material name="grey">
+        <color rgba="0.5 0.5 0.5 1"/>
       </material>
     </visual>
     <collision>
       <geometry>
-        <sphere radius="0.05"/>
+        <cylinder length="0.05" radius="0.1"/>
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.1"/>
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+      <mass value="0.5"/> <!-- Increased to match rear wheels -->
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Right Front Caster Wheel -->
+  <link name="right_front_caster">
+    <visual>
+      <geometry>
+        <cylinder length="0.05" radius="0.1"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.05" radius="0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5"/> <!-- Increased to match rear wheels -->
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
     </inertial>
   </link>
 
@@ -104,24 +127,30 @@
   </link>
 
   <!-- Joints -->
-  <joint name="base_to_left_wheel" type="continuous">
+  <joint name="base_to_left_rear_wheel" type="continuous">
     <parent link="base_link"/>
-    <child link="left_wheel"/>
-    <origin xyz="0 0.25 -0.05" rpy="1.5708 0 0"/>
+    <child link="left_rear_wheel"/>
+    <origin xyz="0.15 0.15 -0.05" rpy="1.5708 0 0"/>
     <axis xyz="0 0 1"/>
   </joint>
 
-  <joint name="base_to_right_wheel" type="continuous">
+  <joint name="base_to_right_rear_wheel" type="continuous">
     <parent link="base_link"/>
-    <child link="right_wheel"/>
-    <origin xyz="0 -0.25 -0.05" rpy="1.5708 0 0"/>
+    <child link="right_rear_wheel"/>
+    <origin xyz="0.15 -0.15 -0.05" rpy="1.5708 0 0"/>
     <axis xyz="0 0 1"/>
   </joint>
 
-  <joint name="base_to_caster" type="fixed">
+  <joint name="base_to_left_front_caster" type="fixed">
     <parent link="base_link"/>
-    <child link="caster_wheel"/>
-    <origin xyz="-0.15 0 -0.1"/>
+    <child link="left_front_caster"/>
+    <origin xyz="-0.15 0.15 -0.05" rpy="1.5708 0 0"/>
+  </joint>
+
+  <joint name="base_to_right_front_caster" type="fixed">
+    <parent link="base_link"/>
+    <child link="right_front_caster"/>
+    <origin xyz="-0.15 -0.15 -0.05" rpy="1.5708 0 0"/>
   </joint>
 
   <joint name="base_to_lidar" type="fixed">
@@ -134,14 +163,17 @@
   <gazebo reference="base_link">
     <material>Gazebo/Red</material>
   </gazebo>
-  <gazebo reference="left_wheel">
+  <gazebo reference="left_rear_wheel">
     <material>Gazebo/Black</material>
   </gazebo>
-  <gazebo reference="right_wheel">
+  <gazebo reference="right_rear_wheel">
     <material>Gazebo/Black</material>
   </gazebo>
-  <gazebo reference="caster_wheel">
-    <material>Gazebo/White</material>
+  <gazebo reference="left_front_caster">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <gazebo reference="right_front_caster">
+    <material>Gazebo/Grey</material>
   </gazebo>
   <gazebo reference="lidar_link">
     <material>Gazebo/Blue</material>
@@ -153,9 +185,9 @@
       <ros>
         <namespace>/mower_robot</namespace>
       </ros>
-      <left_joint>base_to_left_wheel</left_joint>
-      <right_joint>base_to_right_wheel</right_joint>
-      <wheel_separation>0.5</wheel_separation>
+      <left_joint>base_to_left_rear_wheel</left_joint>
+      <right_joint>base_to_right_rear_wheel</right_joint>
+      <wheel_separation>0.3</wheel_separation>
       <wheel_diameter>0.2</wheel_diameter>
       <max_wheel_torque>20</max_wheel_torque>
       <max_wheel_acceleration>10</max_wheel_acceleration>
